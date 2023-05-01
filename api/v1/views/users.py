@@ -19,7 +19,7 @@ def r_user_id(user_id):
     user = storage.get(User, user_id)
     if not user:
         abort(404)
-    return jsonify(state.to_dict())
+    return jsonify(user.to_dict())
 
 
 @app_views.route('/users/<user_id>', methods=['DELETE'],
