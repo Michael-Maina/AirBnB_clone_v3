@@ -5,13 +5,14 @@ from flask import jsonify, abort, make_response, request
 from models import storage
 from models.city import City
 from models.place import Place
+from models.user import User
 
 
 @app_views.route('/cities/<city_id>/places', methods=['GET'],
                  strict_slashes=False)
 def places(city_id):
     """Retrieves the list of all Place objects"""
-    city = storage.get("City", city_id)
+    city = storage.get(City, city_id)
     if not city:
         abort(404)
     return jsonify([place.to_dict() for place in city.places])
@@ -20,7 +21,7 @@ def places(city_id):
 @app_views.route('/places/<place_id>', methods=['GET'], strict_slashes=False)
 def r_place_id(place_id):
     """Retrieves a Place object"""
-    place = storage.get("Place", place_id)
+    place = storage.get(Place, place_id)
     if not place:
         abort(404)
     return jsonify(place.to_dict())
@@ -30,7 +31,7 @@ def r_place_id(place_id):
                  strict_slashes=False)
 def del_place(place_id):
     """Deletes a Place object"""
-    place = storage.get("Place", place_id)
+    place = storage.get(Place, place_id)
     if not place:
         abort(404)
     storage.delete(place)
@@ -42,7 +43,7 @@ def del_place(place_id):
                  strict_slashes=False)
 def post_place(city_id):
     """Creates a Place object"""
-    city = storage.get("City", city_id)
+    city = storage.get(City, city_id)
     if not city:
         abort(404)
     new_place = request.get_json()
@@ -51,7 +52,7 @@ def post_place(city_id):
     if "user_id" not in new_place:
         abort(400, "Missing user_id")
     user_id = new_place['user_id']
-    if not storage.get("User", user_id):
+    if not storage.get(User, user_id):
         abort(404)
     if "name" not in new_place:
         abort(400, "Missing name")
@@ -66,7 +67,7 @@ def post_place(city_id):
                  strict_slashes=False)
 def put_place(place_id):
     """Updates a Place object"""
-    place = storage.get("Place", place_id)
+    place = storage.get(Place, place_id)
     if not place:
         abort(404)
 
