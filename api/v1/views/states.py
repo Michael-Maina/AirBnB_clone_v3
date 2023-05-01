@@ -29,7 +29,7 @@ def del_state(state_id):
     state = storage.get("State", state_id)
     if not state:
         abort(404)
-    state.delete()
+    storage.delete(state)
     storage.save()
     return make_response(jsonify({}), 200)
 
@@ -43,7 +43,6 @@ def post_state():
     if "name" not in new_state:
         abort(400, "Missing name")
     state = State(**new_state)
-    storage.new(state)
     storage.save()
     return make_response(jsonify(state.to_dict()), 201)
 

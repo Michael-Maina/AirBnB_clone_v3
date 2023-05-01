@@ -30,7 +30,7 @@ def del_amenity(amenity_id):
     amenity = storage.get("Amenity", amenity_id)
     if not amenity:
         abort(404)
-    amenity.delete()
+    storage.delete(amenity)
     storage.save()
     return make_response(jsonify({}), 200)
 
@@ -44,7 +44,6 @@ def post_amenity():
     if "name" not in new_amenity:
         abort(400, "Missing name")
     amenity = Amenity(**new_amenity)
-    storage.new(amenity)
     storage.save()
     return make_response(jsonify(amenity.to_dict()), 201)
 
