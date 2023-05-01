@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """Handles all RESTFUL API actions for Review objects"""
 from api.v1.views import app_views
-from flask import Blueprint
+from flask import Blueprint, make_response
 from models import storage
 from models.place import Place
 from models.review import Review
@@ -41,7 +41,7 @@ def delete_review(review_id):
         abort(404)
     storage.delete(review)
     storage.save()
-    return jsonify({}), 200
+    return make_response(jsonify({}), 200)
 
 
 @app_views.route(
@@ -64,7 +64,7 @@ def create_review(place_id):
     data['place_id'] = place_id
     review = Review(**data)
     review.save()
-    return jsonify(review.to_dict()), 201
+    return make_response(jsonify(review.to_dict()), 201)
 
 
 @app_views.route('/reviews/<review_id>', methods=['PUT'], strict_slashes=False)
@@ -83,4 +83,4 @@ def update_review(review_id):
         if key not in ignore:
             setattr(review, key, value)
     review.save()
-    return jsonify(review.to_dict()), 200
+    return make_response(jsonify(review.to_dict()), 200)
