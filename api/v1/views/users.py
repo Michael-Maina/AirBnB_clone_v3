@@ -29,7 +29,7 @@ def del_user(user_id):
     user = storage.get("User", user_id)
     if not user:
         abort(404)
-    user.delete()
+    storage.delete(user)
     storage.save()
     return make_response(jsonify({}), 200)
 
@@ -46,7 +46,6 @@ def post_user():
         abort(400, "Missing password")
 
     user = User(**new_user)
-    storage.new(user)
     storage.save()
     return make_response(jsonify(user.to_dict()), 201)
 
