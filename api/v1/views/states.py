@@ -60,7 +60,7 @@ def put_state(state_id):
         abort(400, "Not a JSON")
 
     for key, value in body_request.items():
-        if key != 'id' and key != 'created_at' and ket != 'updated_at':
+        if key != 'id' and key != 'created_at' and key != 'updated_at':
             setattr(state, key, value)
 
     storage.save()
