@@ -16,7 +16,7 @@ def users():
 @app_views.route('/users/<user_id>', methods=['GET'], strict_slashes=False)
 def r_user_id(user_id):
     """Retrieves User object"""
-    user = storage.get("User", user_id)
+    user = storage.get(User, user_id)
     if not user:
         abort(404)
     return jsonify(state.to_dict())
@@ -26,7 +26,7 @@ def r_user_id(user_id):
                  strict_slashes=False)
 def del_user(user_id):
     """Deletes a User object"""
-    user = storage.get("User", user_id)
+    user = storage.get(User, user_id)
     if not user:
         abort(404)
     storage.delete(user)
@@ -53,7 +53,7 @@ def post_user():
 @app_views.route('/users/<user_id>', methods=['PUT'], strict_slashes=False)
 def put_user(user_id):
     """Updates a User object"""
-    user = storage.get("User", user_id)
+    user = storage.get(User, user_id)
     if not user:
         abort(404)
 
